@@ -6,6 +6,6 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		createDisplay(800, 600);
+		createDisplay(800, 600, 60);
 	}
 }
