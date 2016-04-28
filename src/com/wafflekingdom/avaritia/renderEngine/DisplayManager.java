@@ -11,7 +11,7 @@ public class DisplayManager
 {
 	private static int WIDTH;
 	private static int HEIGHT;
-	private static int fps;
+	private static int FPS_CAP;
 
 
 
@@ -21,21 +21,13 @@ public class DisplayManager
 
 		WIDTH = width;
 		HEIGHT = height;
-		fps = maxFPS;
+		FPS_CAP = maxFPS;
 
 		try
 		{
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("Avaritia");
 			Display.create(new PixelFormat(), attribs);
-
-			while(!Display.isCloseRequested())
-			{
-				updateDisplay();
-			}
-
-			closeDisplay();
-			System.exit(0);
 		}
 		catch(LWJGLException e)
 		{
@@ -51,7 +43,7 @@ public class DisplayManager
 	{
 
 		Display.update();
-		Display.sync(fps);
+		Display.sync(FPS_CAP);
 
 	}
 
