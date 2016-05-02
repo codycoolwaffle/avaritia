@@ -1,8 +1,12 @@
 package com.wafflekingdom.avaritia.engineTester;
 
+import com.wafflekingdom.avaritia.entities.*;
+import com.wafflekingdom.avaritia.models.*;
 import com.wafflekingdom.avaritia.renderEngine.*;
 import com.wafflekingdom.avaritia.shaders.*;
+import com.wafflekingdom.avaritia.textures.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.util.vector.*;
 
 /**
  * Created by haslamdavid5967 on 4/27/16.
@@ -13,30 +17,30 @@ public class MainGameLoop
 	public static void main(String[] args)
 	{
 
-		DisplayManager.createDisplay(800, 600, 60);
+		DisplayManager.createDisplay(800, 800, 60);
 
 		Loader loader = new Loader();
-		Renderer renderer = new Renderer();
 		StaticShader shader = new StaticShader();
+		Renderer renderer = new Renderer(shader);
 
-		float[] vertices = {-0.5f, 0.5f, 0f,  //V0
-		                    -0.5f, -0.5f, 0f, //V1
-		                    0.5f, -0.5f, 0f,  //V3
-		                    0.5f, 0.5f, 0f    //V4
-		};
+		RawModel model = OBJLoader.loadOBJModel("dragon", loader);
 
-		int[] indices = {0, 1, 3, //Top Left Triangle (V0, V1, V3)
-		                 3, 1, 2  //Bottom Right Triangle (V3, V1, V2)
-		};
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("sphere_infinium-ore")));
 
-		RawModel model = loader.loadToVAO(vertices, indices);
+		Entity entity = new Entity(staticModel, new Vector3f(0, -5, -25), 0, 0, 0, 1);
+		Light light = new Light(new Vector3f(0, 0, -15), new Vector3f(1, 1, 1));
+
+		Camera camera = new Camera();
 
 		while(!Display.isCloseRequested())
 		{
+			entity.increaseRotation(0, 1, 0);
+			camera.move();
 			renderer.prepare();
-			//Game logic
 			shader.start();
-			renderer.render(model);
+			shader.loadLight(light);
+			shader.loadViewMatrix(camera);
+			renderer.render(entity, shader);
 			shader.stop();
 			DisplayManager.updateDisplay();
 		}

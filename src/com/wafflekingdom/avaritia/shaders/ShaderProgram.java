@@ -1,8 +1,11 @@
 package com.wafflekingdom.avaritia.shaders;
 
+import org.lwjgl.*;
 import org.lwjgl.opengl.*;
+import org.lwjgl.util.vector.*;
 
 import java.io.*;
+import java.nio.*;
 
 /**
  * Created by haslamdavid5967 on 4/28/16.
@@ -11,6 +14,7 @@ import java.io.*;
 public abstract class ShaderProgram
 {
 
+	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
@@ -26,6 +30,7 @@ public abstract class ShaderProgram
 		bindAttributes();
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
+		getAllUniformLocations();
 	}
 
 	private static int loadShader(String file, int type)
@@ -59,6 +64,13 @@ public abstract class ShaderProgram
 		return shaderID;
 	}
 
+	protected abstract void getAllUniformLocations();
+
+	protected int getUniformLocation(String uniformName)
+	{
+		return GL20.glGetUniformLocation(programID, uniformName);
+	}
+
 	public void start()
 	{
 		GL20.glUseProgram(programID);
@@ -84,6 +96,30 @@ public abstract class ShaderProgram
 	protected void bindAttribute(int attribute, String variableName)
 	{
 		GL20.glBindAttribLocation(programID, attribute, variableName);
+	}
+
+	protected void loadFloat(int loacation, float value)
+	{
+		GL20.glUniform1f(loacation, value);
+	}
+
+	protected void loadVector(int location, Vector3f vector)
+	{
+		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+
+	protected void loadBoolean(int location, boolean value)
+	{
+		float toLoad = 0;
+		if(value) toLoad = 1;
+		GL20.glUniform1f(location, toLoad);
+	}
+
+	protected void loadMatrix(int location, Matrix4f matrix)
+	{
+		matrix.store(matrixBuffer);
+		matrixBuffer.flip();
+		GL20.glUniformMatrix4(location, false, matrixBuffer);
 	}
 
 }

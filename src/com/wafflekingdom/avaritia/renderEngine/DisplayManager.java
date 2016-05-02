@@ -14,10 +14,9 @@ public class DisplayManager
 	private static int FPS_CAP;
 
 
-
 	public static void createDisplay(int width, int height, int maxFPS)
 	{
-		ContextAttribs attribs = new ContextAttribs(3,2).withForwardCompatible(true).withProfileCore(true);
+		ContextAttribs attribs = new ContextAttribs(3, 2).withForwardCompatible(true).withProfileCore(true);
 
 		WIDTH = width;
 		HEIGHT = height;
