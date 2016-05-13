@@ -4,11 +4,10 @@ import com.wafflekingdom.avaritia.entities.*;
 import com.wafflekingdom.avaritia.toolbox.*;
 import org.lwjgl.util.vector.*;
 
-public class StaticShader extends ShaderProgram
+public class TerrainShader extends ShaderProgram
 {
-
-	private static final String VERTEX_FILE = "src/com/wafflekingdom/avaritia/shaders/vertexShader";
-	private static final String FRAGMENT_FILE = "src/com/wafflekingdom/avaritia/shaders/fragmentShader";
+	private static final String VERTEX_FILE = "src/com/wafflekingdom/avaritia/shaders/terrainVertexShader";
+	private static final String FRAGMENT_FILE = "src/com/wafflekingdom/avaritia/shaders/terrainFragmentShader";
 
 	private int location_transformationMatrix;
 	private int location_projectionMatrix;
@@ -17,8 +16,8 @@ public class StaticShader extends ShaderProgram
 	private int location_lightColour;
 	private int location_shineDamper;
 	private int location_reflectivity;
-	
-	public StaticShader()
+
+	public TerrainShader()
 	{
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}

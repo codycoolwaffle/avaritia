@@ -6,10 +6,6 @@ import org.lwjgl.util.vector.*;
 import java.io.*;
 import java.util.*;
 
-/**
- * Created by haslamdavid5967 on 5/1/16.
- */
-
 public class OBJLoader
 {
 

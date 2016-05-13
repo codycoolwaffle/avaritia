@@ -3,10 +3,6 @@ package com.wafflekingdom.avaritia.toolbox;
 import com.wafflekingdom.avaritia.entities.*;
 import org.lwjgl.util.vector.*;
 
-/**
- * Created by haslamdavid5967 on 4/29/16.
- */
-
 public class Maths
 {
 

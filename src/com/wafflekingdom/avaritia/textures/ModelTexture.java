@@ -1,9 +1,5 @@
 package com.wafflekingdom.avaritia.textures;
 
-/**
- * Created by haslamdavid5967 on 4/29/16.
- */
-
 public class ModelTexture
 {
 
@@ -21,5 +17,24 @@ public class ModelTexture
 	{
 		return textureID;
 	}
-	
+
+	public float getShineDamper()
+	{
+		return shineDamper;
+	}
+
+	public void setShineDamper(float shineDamper)
+	{
+		this.shineDamper = shineDamper;
+	}
+
+	public float getReflectivity()
+	{
+		return reflectivity;
+	}
+
+	public void setReflectivity(float reflectivity)
+	{
+		this.reflectivity = reflectivity;
+	}
 }

@@ -9,10 +9,6 @@ import java.io.*;
 import java.nio.*;
 import java.util.*;
 
-/**
- * Created by haslamdavid5967 on 4/27/16.
- */
-
 public class Loader
 {
 	private List<Integer> vaos = new ArrayList<>();
