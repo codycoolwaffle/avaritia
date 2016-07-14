@@ -12,6 +12,7 @@ import java.util.*;
 
 public class TerrainRenderer
 {
+
 	private TerrainShader shader;
 
 	public TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix)
@@ -59,4 +60,5 @@ public class TerrainRenderer
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), 0, 0, 0, 1);
 		shader.loadTransformationMatrix(transformationMatrix);
 	}
+
 }

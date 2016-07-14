@@ -8,6 +8,8 @@ import com.wafflekingdom.avaritia.textures.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.util.vector.*;
 
+import java.util.*;
+
 public class MainGameLoop
 {
 	public static void main(String[] args)
@@ -17,29 +19,37 @@ public class MainGameLoop
 
 		Loader loader = new Loader();
 
-		RawModel model = OBJLoader.loadOBJModel("dragon", loader);
+		RawModel model = OBJLoader.loadOBJModel("tree", loader);
 
-		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("sphere_infinium-ore")));
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("tree")));
 		ModelTexture texture = staticModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
 
-		Entity entity = new Entity(staticModel, new Vector3f(0, -5, -25), 0, 0, 0, 1);
-		Light light = new Light(new Vector3f(0, 0, -15), new Vector3f(1, 1, 1));
+		List<Entity> entities = new ArrayList<Entity>();
+		Random random = new Random();
+		for(int i = 0; i < 500; i++)
+		{
+			entities.add(new Entity(staticModel, new Vector3f(random.nextFloat() * 800 - 400, 0, random.nextFloat() * -600), 0, 0, 0, 3));
+		}
 
-		Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("dirt_podzol_top")));
-		Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("dirt_podzol_top")));
+		Light light = new Light(new Vector3f(20000, 20000, 20000), new Vector3f(1, 1, 1));
+
+		Terrain terrain = new Terrain(0, 0, loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain2 = new Terrain(1, 0, loader, new ModelTexture(loader.loadTexture("grass")));
 
 		Camera camera = new Camera();
 
 		MasterRenderer renderer = new MasterRenderer();
 		while(!Display.isCloseRequested())
 		{
-			entity.increaseRotation(0, 1, 0);
 			camera.move();
 			renderer.processTerrain(terrain);
 			renderer.processTerrain(terrain2);
-			renderer.processEntity(entity);
+			for(Entity entity : entities)
+			{
+				renderer.processEntity(entity);
+			}
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
 		}
