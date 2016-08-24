@@ -1,10 +1,6 @@
 package com.wafflekingdom.avaritia.models;
 
-import com.wafflekingdom.avaritia.textures.*;
-
-/**
- * Created by haslamdavid5967 on 4/29/16.
- */
+import com.wafflekingdom.avaritia.textures.ModelTexture;
 
 public class TexturedModel
 {

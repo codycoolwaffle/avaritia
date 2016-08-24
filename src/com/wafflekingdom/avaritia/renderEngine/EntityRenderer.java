@@ -1,14 +1,19 @@
 package com.wafflekingdom.avaritia.renderEngine;
 
-import com.wafflekingdom.avaritia.entities.*;
-import com.wafflekingdom.avaritia.models.*;
-import com.wafflekingdom.avaritia.shaders.*;
-import com.wafflekingdom.avaritia.textures.*;
-import com.wafflekingdom.avaritia.toolbox.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.util.vector.*;
+import com.wafflekingdom.avaritia.entities.Entity;
+import com.wafflekingdom.avaritia.models.RawModel;
+import com.wafflekingdom.avaritia.models.TexturedModel;
+import com.wafflekingdom.avaritia.shaders.StaticShader;
+import com.wafflekingdom.avaritia.textures.ModelTexture;
+import com.wafflekingdom.avaritia.toolbox.Maths;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class EntityRenderer
 {
@@ -46,6 +51,12 @@ public class EntityRenderer
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);
 		ModelTexture texture = model.getTexture();
+		MasterRenderer.enableCulling();
+		if(texture.isHasTransparency())
+		{
+			MasterRenderer.disableCulling();
+		}
+		shader.loadFakeLightingVariable(texture.isUseFakeLighting());
 		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
@@ -53,6 +64,7 @@ public class EntityRenderer
 
 	private void unbindTexturedModel()
 	{
+		MasterRenderer.disableCulling();
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

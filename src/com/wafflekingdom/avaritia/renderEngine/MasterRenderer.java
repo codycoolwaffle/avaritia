@@ -1,19 +1,30 @@
 package com.wafflekingdom.avaritia.renderEngine;
 
-import com.wafflekingdom.avaritia.entities.*;
-import com.wafflekingdom.avaritia.models.*;
-import com.wafflekingdom.avaritia.shaders.*;
-import com.wafflekingdom.avaritia.terrains.*;
-import org.lwjgl.opengl.*;
-import org.lwjgl.util.vector.*;
+import com.wafflekingdom.avaritia.entities.Camera;
+import com.wafflekingdom.avaritia.entities.Entity;
+import com.wafflekingdom.avaritia.entities.Light;
+import com.wafflekingdom.avaritia.models.TexturedModel;
+import com.wafflekingdom.avaritia.shaders.StaticShader;
+import com.wafflekingdom.avaritia.shaders.TerrainShader;
+import com.wafflekingdom.avaritia.terrains.Terrain;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MasterRenderer
 {
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.1f;
 	private static final float FAR_PLANE = 1000;
+
+	private static final float RED = 0.5f;
+	private static final float GREEN = 0.5f;
+	private static final float BLUE = 0.5f;
 
 	private Matrix4f projectionMatrix;
 
@@ -28,22 +39,34 @@ public class MasterRenderer
 
 	public MasterRenderer()
 	{
-		GL11.glEnable(GL11.GL_CULL_FACE);
-		GL11.glCullFace(GL11.GL_BACK);
+		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+	}
+
+	public static void enableCulling()
+	{
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
+	}
+
+	public static void disableCulling()
+	{
+		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 
 	public void render(Light sun, Camera camera)
 	{
 		prepare();
 		shader.start();
+		shader.loadSkyColour(RED, GREEN, BLUE);
 		shader.loadLight(sun);
 		shader.loadViewMatrix(camera);
 		renderer.render(entities);
 		shader.stop();
 		terrainShader.start();
+		terrainShader.loadSkyColour(RED, GREEN, BLUE);
 		terrainShader.loadLight(sun);
 		terrainShader.loadViewMatrix(camera);
 		terrainRenderer.render(terrains);
@@ -83,7 +106,7 @@ public class MasterRenderer
 	{
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(0f, 0f, 0f, 1f);
+		GL11.glClearColor(RED, GREEN, BLUE, 1f);
 	}
 
 	private void createProjectionMatrix()

@@ -1,11 +1,7 @@
 package com.wafflekingdom.avaritia.entities;
 
-import com.wafflekingdom.avaritia.models.*;
-import org.lwjgl.util.vector.*;
-
-/**
- * Created by haslamdavid5967 on 4/29/16.
- */
+import com.wafflekingdom.avaritia.models.TexturedModel;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Entity
 {

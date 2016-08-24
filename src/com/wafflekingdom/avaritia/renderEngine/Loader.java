@@ -1,13 +1,20 @@
 package com.wafflekingdom.avaritia.renderEngine;
 
-import com.wafflekingdom.avaritia.models.*;
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
-import org.newdawn.slick.opengl.*;
+import com.wafflekingdom.avaritia.models.RawModel;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.newdawn.slick.opengl.Texture;
+import org.newdawn.slick.opengl.TextureLoader;
 
-import java.io.*;
-import java.nio.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Loader
 {
@@ -31,7 +38,7 @@ public class Loader
 		Texture texture = null;
 		try
 		{
-			texture = TextureLoader.getTexture("PNG", new FileInputStream("resources/" + fileName + ".png"));
+			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
 		}
 		catch(IOException e)
 		{
@@ -43,9 +50,9 @@ public class Loader
 
 	public void cleanUp()
 	{
-		vaos.forEach(GL30::glDeleteVertexArrays);
-		vbos.forEach(GL15::glDeleteBuffers);
-		textures.forEach(GL11::glDeleteTextures);
+		vaos.forEach(GL30:: glDeleteVertexArrays);
+		vbos.forEach(GL15:: glDeleteBuffers);
+		textures.forEach(GL11:: glDeleteTextures);
 	}
 
 	private int createVAO()
@@ -96,5 +103,5 @@ public class Loader
 		buffer.flip();
 		return buffer;
 	}
-	
+
 }

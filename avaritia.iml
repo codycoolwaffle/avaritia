@@ -35,5 +35,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="macosx" level="project" />
+    <orderEntry type="library" name="windows" level="project" />
   </component>
 </module>

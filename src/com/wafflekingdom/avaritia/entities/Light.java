@@ -1,6 +1,6 @@
 package com.wafflekingdom.avaritia.entities;
 
-import org.lwjgl.util.vector.*;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Light
 {

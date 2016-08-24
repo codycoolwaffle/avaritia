@@ -1,8 +1,9 @@
 package com.wafflekingdom.avaritia.terrains;
 
-import com.wafflekingdom.avaritia.models.*;
-import com.wafflekingdom.avaritia.renderEngine.*;
-import com.wafflekingdom.avaritia.textures.*;
+import com.wafflekingdom.avaritia.models.RawModel;
+import com.wafflekingdom.avaritia.renderEngine.Loader;
+import com.wafflekingdom.avaritia.textures.TerrainTexture;
+import com.wafflekingdom.avaritia.textures.TerrainTexturePack;
 
 public class Terrain
 {
@@ -13,40 +14,17 @@ public class Terrain
 	private float x;
 	private float z;
 	private RawModel model;
-	private ModelTexture texture;
+	private TerrainTexturePack texturePack;
+	private TerrainTexture blendMap;
 
-	public Terrain(int gridX, int gridZ, Loader loader, ModelTexture texture)
+	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap)
 	{
-		this.texture = texture;
+		this.texturePack = texturePack;
+		this.blendMap = blendMap;
 		this.x = gridX * SIZE;
 		this.z = gridZ * SIZE;
 		this.model = generateTerrain(loader);
 	}
-
-
-	public float getX()
-	{
-		return x;
-	}
-
-
-	public float getZ()
-	{
-		return z;
-	}
-
-
-	public RawModel getModel()
-	{
-		return model;
-	}
-
-
-	public ModelTexture getTexture()
-	{
-		return texture;
-	}
-
 
 	private RawModel generateTerrain(Loader loader)
 	{
@@ -60,9 +38,9 @@ public class Terrain
 		{
 			for(int j = 0; j < VERTEX_COUNT; j++)
 			{
-				vertices[vertexPointer * 3] = -(float) j / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
 				vertices[vertexPointer * 3 + 1] = 0;
-				vertices[vertexPointer * 3 + 2] = -(float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+				vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
 				normals[vertexPointer * 3] = 0;
 				normals[vertexPointer * 3 + 1] = 1;
 				normals[vertexPointer * 3 + 2] = 0;
@@ -89,6 +67,31 @@ public class Terrain
 			}
 		}
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
+	}
+
+	public float getX()
+	{
+		return x;
+	}
+
+	public float getZ()
+	{
+		return z;
+	}
+
+	public RawModel getModel()
+	{
+		return model;
+	}
+
+	public TerrainTexturePack getTexturePack()
+	{
+		return texturePack;
+	}
+
+	public TerrainTexture getBlendMap()
+	{
+		return blendMap;
 	}
 
 }

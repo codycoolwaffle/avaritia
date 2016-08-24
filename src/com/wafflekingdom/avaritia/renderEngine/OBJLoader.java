@@ -1,10 +1,15 @@
 package com.wafflekingdom.avaritia.renderEngine;
 
-import com.wafflekingdom.avaritia.models.*;
-import org.lwjgl.util.vector.*;
+import com.wafflekingdom.avaritia.models.RawModel;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OBJLoader
 {
@@ -15,7 +20,7 @@ public class OBJLoader
 		FileReader fr = null;
 		try
 		{
-			fr = new FileReader(new File("resources/" + fileName + ".obj"));
+			fr = new FileReader(new File("res/" + fileName + ".obj"));
 		}
 		catch(FileNotFoundException e)
 		{
@@ -117,5 +122,5 @@ public class OBJLoader
 		normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
 		normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
 	}
-	
+
 }
