@@ -1,18 +1,17 @@
 package com.wafflekingdom.avaritia.shaders;
 
+import com.wafflekingdom.avaritia.entities.Camera;
+import com.wafflekingdom.avaritia.entities.Light;
+import com.wafflekingdom.avaritia.toolbox.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.wafflekingdom.avaritia.toolbox.Maths;
-import com.wafflekingdom.avaritia.entities.Camera;
-import com.wafflekingdom.avaritia.entities.Light;
-
 public class TerrainShader extends ShaderProgram
 {
-
+	
 	private static final String VERTEX_FILE = "src/com/wafflekingdom/avaritia/shaders/terrainVertexShader";
 	private static final String FRAGMENT_FILE = "src/com/wafflekingdom/avaritia/shaders/terrainFragmentShader";
-
+	
 	private int location_transformationMatrix;
 	private int location_projectiontionMatrix;
 	private int location_viewMatrix;
@@ -26,20 +25,23 @@ public class TerrainShader extends ShaderProgram
 	private int location_gTexture;
 	private int location_bTexture;
 	private int location_blendMap;
-
-	public TerrainShader() {
+	
+	public TerrainShader()
+	{
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
-
+	
 	@Override
-	protected void bindAttributes() {
+	protected void bindAttributes()
+	{
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 		super.bindAttribute(2, "normal");
 	}
-
+	
 	@Override
-	protected void getAllUniformLocations() {
+	protected void getAllUniformLocations()
+	{
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 		location_projectiontionMatrix = super.getUniformLocation("projectionMatrix");
 		location_viewMatrix = super.getUniformLocation("viewMatrix");
@@ -54,40 +56,47 @@ public class TerrainShader extends ShaderProgram
 		location_bTexture = super.getUniformLocation("bTexture");
 		location_blendMap = super.getUniformLocation("blendMap");
 	}
-
-	public void connectTextureUnits() {
+	
+	public void connectTextureUnits()
+	{
 		super.loadInt(location_backgroundTexture, 0);
 		super.loadInt(location_rTexture, 1);
 		super.loadInt(location_gTexture, 2);
 		super.loadInt(location_bTexture, 3);
 		super.loadInt(location_blendMap, 4);
 	}
-
-	public void loadSkyColour(float r, float g, float b) {
+	
+	public void loadSkyColour(float r, float g, float b)
+	{
 		super.loadVector(location_skyColour, new Vector3f(r, g, b));
 	}
-
-	public void loadShineVariables(float damper, float reflectivity) {
+	
+	public void loadShineVariables(float damper, float reflectivity)
+	{
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
-
-	public void loadTransformationMatrix(Matrix4f matrix) {
+	
+	public void loadTransformationMatrix(Matrix4f matrix)
+	{
 		super.loadMatrix(location_transformationMatrix, matrix);
 	}
-
-	public void loadLight(Light light) {
+	
+	public void loadLight(Light light)
+	{
 		super.loadVector(location_lightPosition, light.getPosition());
 		super.loadVector(location_lightColour, light.getColour());
 	}
-
-	public void loadViewMatrix(Camera camera) {
+	
+	public void loadViewMatrix(Camera camera)
+	{
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
 	}
-
-	public void loadProjectionMatrix(Matrix4f projection) {
+	
+	public void loadProjectionMatrix(Matrix4f projection)
+	{
 		super.loadMatrix(location_projectiontionMatrix, projection);
 	}
-
+	
 }
