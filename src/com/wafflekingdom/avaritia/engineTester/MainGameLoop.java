@@ -49,9 +49,10 @@ public class MainGameLoop
 		RawModel model = com.wafflekingdom.avaritia.renderEngine.OBJLoader.loadOBJModel("tree", loader);
 		
 		TexturedModel tree = new TexturedModel(model, new ModelTexture(loader.loadTexture("tree")));
-		TexturedModel grass = new TexturedModel(com.wafflekingdom.avaritia.renderEngine.OBJLoader.loadOBJModel("grassModel", loader), new ModelTexture(loader.loadTexture("diffuse")));
-		TexturedModel fern = new TexturedModel(com.wafflekingdom.avaritia.renderEngine.OBJLoader.loadOBJModel("fern", loader), new ModelTexture(loader.loadTexture("fern")));
-		TexturedModel bobble = new TexturedModel(com.wafflekingdom.avaritia.renderEngine.OBJLoader.loadOBJModel("lowPolyTree", loader), new ModelTexture(loader.loadTexture("lowPolyTree")));
+		TexturedModel grass = new TexturedModel(OBJLoader.loadOBJModel("grassModel", loader), new ModelTexture(loader.loadTexture("diffuse")));
+		TexturedModel fern = new TexturedModel(OBJLoader.loadOBJModel("fern", loader), new ModelTexture(loader.loadTexture("fern")));
+		TexturedModel bobble = new TexturedModel(OBJLoader.loadOBJModel("lowPolyTree", loader), new ModelTexture(loader.loadTexture("lowPolyTree")));
+		TexturedModel pine = new TexturedModel(OBJLoader.loadOBJModel("pine", loader), new ModelTexture(loader.loadTexture("pine")));
 		
 		grass.getTexture().setHasTransparency(true);
 		grass.getTexture().setUseFakeLighting(true);
@@ -94,6 +95,10 @@ public class MainGameLoop
 				z = random.nextFloat() * 1600 -800;
 				y = calculateYPosOnTerrain(x, z);
 				entities.add(new Entity(tree, new Vector3f(x, y, z), 0, 0, 0, random.nextFloat() * 1 + 4));
+				x = random.nextFloat() * 1600 - 800;
+				z = random.nextFloat() * 1600 -800;
+				y = calculateYPosOnTerrain(x, z);
+				entities.add(new Entity(pine, new Vector3f(x, y, z), 0, random.nextFloat() * 360, 0, random.nextFloat() * 0.1f + 0.6f));
 			}
 			
 		}
