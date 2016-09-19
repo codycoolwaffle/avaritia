@@ -16,6 +16,7 @@ import com.wafflekingdom.avaritia.terrains.Terrain;
 import com.wafflekingdom.avaritia.textures.ModelTexture;
 import com.wafflekingdom.avaritia.textures.TerrainTexture;
 import com.wafflekingdom.avaritia.textures.TerrainTexturePack;
+import com.wafflekingdom.avaritia.toolbox.MousePicker;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -109,7 +110,6 @@ public class MainGameLoop
 		
 		
 		List<Light> lights = new ArrayList<>();
-		lights.add(new Light(new Vector3f(0, 1000, -7000), new Vector3f(0.4f, 0.4f, 0.4f)));
 		lights.add(new Light(new Vector3f(185, 10, -293), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(370, 17, -300), new Vector3f(0, 2, 2), new Vector3f(1, 0.01f, 0.002f)));
 		lights.add(new Light(new Vector3f(293, 7, -305), new Vector3f(2, 2, 0), new Vector3f(1, 0.01f, 0.002f)));
@@ -124,7 +124,7 @@ public class MainGameLoop
 		TexturedModel playerModel = new TexturedModel(playerRaw, new ModelTexture(loader.loadTexture("playerTexture")));
 		
 		//Player player = new Player(playerModel, new Vector3f(random.nextFloat() * 600 - 300, 5, random.nextFloat() * 600 - 300), 0, 180, 0, 0.6f);
-		Player player = new Player(playerModel, new Vector3f(300, 5, -300), 0, 180, 0, 0.6f);
+		Player player = new Player(tree, new Vector3f(300, 5, -300), 0, 180, 0, 0.6f);
 		Camera camera = new Camera(player);
 		
 		List<GuiTexture> guis = new ArrayList<>();
@@ -133,10 +133,29 @@ public class MainGameLoop
 		
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		
+		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrainList);
+		
+		Entity lampEntity = new Entity(lamp, new Vector3f(293, -6.8f, -305), 0, 0, 0, 1);
+		
+		entities.add(lampEntity);
+		
+		Light light = new Light(new Vector3f(293, -6.8f, -305), new Vector3f(0, 2, 2), new Vector3f(1, 0.01f, 0.002f));
+		
+		lights.add(light);
+		
 		while(!Display.isCloseRequested())
 		{
 			camera.move();
 			player.move(terrainList);
+			
+			picker.update();
+			Vector3f terrainPoint = picker.getCurrentTerrainPoint();
+			if(terrainPoint != null)
+			{
+				lampEntity.setPosition(terrainPoint);
+				light.setPosition(new Vector3f(terrainPoint.x, terrainPoint.y + 15, terrainPoint.z));
+			}
+			
 			renderer.processEntity(player);
 			for(Terrain terrains : terrainList)
 			{
