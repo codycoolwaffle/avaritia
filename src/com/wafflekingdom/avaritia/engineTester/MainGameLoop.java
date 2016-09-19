@@ -53,13 +53,14 @@ public class MainGameLoop
 		TexturedModel fern = new TexturedModel(OBJLoader.loadOBJModel("fern", loader), new ModelTexture(loader.loadTexture("fern")));
 		TexturedModel bobble = new TexturedModel(OBJLoader.loadOBJModel("lowPolyTree", loader), new ModelTexture(loader.loadTexture("lowPolyTree")));
 		TexturedModel pine = new TexturedModel(OBJLoader.loadOBJModel("pine", loader), new ModelTexture(loader.loadTexture("pine")));
+		TexturedModel lamp = new TexturedModel(OBJLoader.loadOBJModel("lamp", loader), new ModelTexture(loader.loadTexture("lamp")));
 		
 		grass.getTexture().setHasTransparency(true);
 		grass.getTexture().setUseFakeLighting(true);
 		grass.getTexture().setNumberOfRows(4);
 		fern.getTexture().setHasTransparency(true);
 		fern.getTexture().setNumberOfRows(2);
-		bobble.getTexture().setNumberOfRows(2);
+		lamp.getTexture().setUseFakeLighting(true);
 		
 		
 		Terrain terrain = new Terrain(0, 0, loader, texturePack, blendMap, "heightmap");
@@ -67,18 +68,20 @@ public class MainGameLoop
 		Terrain terrain3 = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
 		Terrain terrain4 = new Terrain(-1, -1, loader, texturePack, blendMap, "heightmap");
 		
-		terrainList = new Terrain[] {terrain, terrain2, terrain3, terrain4};
+		terrainList = new Terrain[]{terrain, terrain2, terrain3, terrain4};
 		
 		List<Entity> entities = new ArrayList<>();
 		Random random = new Random();
-		for (int i = 0; i < 5000; i++) {
-			if (i % 7 == 0) {
+		for(int i = 0; i < 5000; i++)
+		{
+			if(i % 3 == 0)
+			{
 				float x = random.nextFloat() * 1600 - 800;
-				float z = random.nextFloat() * 1600 -800;
+				float z = random.nextFloat() * 1600 - 800;
 				float y = calculateYPosOnTerrain(x, z);
 				entities.add(new Entity(fern, random.nextInt(4), new Vector3f(x, y, z), 0, random.nextFloat() * 360, 0, 0.9f));
 				x = random.nextFloat() * 1600 - 800;
-				z = random.nextFloat() * 1600 -800;
+				z = random.nextFloat() * 1600 - 800;
 				y = calculateYPosOnTerrain(x, z);
 				entities.add(new Entity(grass, random.nextInt(9), new Vector3f(x, y, z), 0, 0, 0, 1.8f));
 				//x = random.nextFloat() * 1600 - 800;
@@ -86,39 +89,47 @@ public class MainGameLoop
 				//y = calculateYPosOnTerrain(x, z);
 				//entities.add(new Entity(grass, random.nextInt(9), new Vector3f(x, y, z), 0, 0, 0, 2.3f));
 			}
-			if (i % 3 == 0) {
+			if(i % 4 == 0)
+			{
 				float x = random.nextFloat() * 1600 - 800;
-				float z = random.nextFloat() * 1600 -800;
+				float z = random.nextFloat() * 1600 - 800;
 				float y = calculateYPosOnTerrain(x, z);
-				entities.add(new Entity(bobble, random.nextInt(4), new Vector3f(x, y, z), 0, random.nextFloat() * 360, 0, random.nextFloat() * 0.1f + 0.6f));
-				x = random.nextFloat() * 1600 - 800;
-				z = random.nextFloat() * 1600 -800;
-				y = calculateYPosOnTerrain(x, z);
-				entities.add(new Entity(tree, new Vector3f(x, y, z), 0, 0, 0, random.nextFloat() * 1 + 4));
-				x = random.nextFloat() * 1600 - 800;
-				z = random.nextFloat() * 1600 -800;
-				y = calculateYPosOnTerrain(x, z);
+				//entities.add(new Entity(bobble, new Vector3f(x, y, z), 0, random.nextFloat() * 360, 0, random.nextFloat() * 0.1f + 0.6f));
+				//x = random.nextFloat() * 1600 - 800;
+				//z = random.nextFloat() * 1600 - 800;
+				//y = calculateYPosOnTerrain(x, z);
+				//entities.add(new Entity(tree, new Vector3f(x, y, z), 0, 0, 0, random.nextFloat() * 1 + 4));
+				//x = random.nextFloat() * 1600 - 800;
+				//z = random.nextFloat() * 1600 - 800;
+				//y = calculateYPosOnTerrain(x, z);
 				entities.add(new Entity(pine, new Vector3f(x, y, z), 0, random.nextFloat() * 360, 0, random.nextFloat() * 0.1f + 0.6f));
 			}
 			
 		}
 		
 		
-		Light light = new Light(new Vector3f(20000, 20000, 20000), new Vector3f(1, 1, 1));
+		List<Light> lights = new ArrayList<>();
+		lights.add(new Light(new Vector3f(0, 1000, -7000), new Vector3f(0.4f, 0.4f, 0.4f)));
+		lights.add(new Light(new Vector3f(185, 10, -293), new Vector3f(2, 0, 0), new Vector3f(1, 0.01f, 0.002f)));
+		lights.add(new Light(new Vector3f(370, 17, -300), new Vector3f(0, 2, 2), new Vector3f(1, 0.01f, 0.002f)));
+		lights.add(new Light(new Vector3f(293, 7, -305), new Vector3f(2, 2, 0), new Vector3f(1, 0.01f, 0.002f)));
 		
-		MasterRenderer renderer = new MasterRenderer();
+		entities.add(new Entity(lamp, new Vector3f(185, -4.7f, -293), 0, 0, 0, 1));
+		entities.add(new Entity(lamp, new Vector3f(370, 4.2f, -300), 0, 0, 0, 1));
+		entities.add(new Entity(lamp, new Vector3f(293, -6.8f, -305), 0, 0, 0, 1));
+		
+		MasterRenderer renderer = new MasterRenderer(loader);
 		
 		RawModel playerRaw = OBJLoader.loadOBJModel("person", loader);
 		TexturedModel playerModel = new TexturedModel(playerRaw, new ModelTexture(loader.loadTexture("playerTexture")));
 		
-		Player player = new Player(playerModel, new Vector3f(100, 5, -150), 0, 180, 0, 0.6f);
+		//Player player = new Player(playerModel, new Vector3f(random.nextFloat() * 600 - 300, 5, random.nextFloat() * 600 - 300), 0, 180, 0, 0.6f);
+		Player player = new Player(playerModel, new Vector3f(300, 5, -300), 0, 180, 0, 0.6f);
 		Camera camera = new Camera(player);
 		
 		List<GuiTexture> guis = new ArrayList<>();
-		GuiTexture gui = new GuiTexture(loader.loadTexture("socuwan"), new Vector2f(0.5f, 0.5f), new Vector2f(0.25f, 0.25f));
-		GuiTexture gui2 = new GuiTexture(loader.loadTexture("thinmatrix"), new Vector2f(0.30f, 0.58f), new Vector2f(0.4f, 0.4f));
-		guis.add(gui2);
-		guis.add(gui);
+		GuiTexture health = new GuiTexture(loader.loadTexture("health"), new Vector2f(0.4f, -0.6f), new Vector2f(0.5f, 0.75f));
+		guis.add(health);
 		
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		
@@ -135,7 +146,7 @@ public class MainGameLoop
 			{
 				renderer.processEntity(entity);
 			}
-			renderer.render(light, camera);
+			renderer.render(lights, camera);
 			guiRenderer.render(guis);
 			DisplayManager.updateDisplay();
 		}

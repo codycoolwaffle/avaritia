@@ -34,12 +34,14 @@ public class Entity
 		this.textureIndex = textureIndex;
 	}
 	
-	public float getTextureXOffset() {
+	public float getTextureXOffset()
+	{
 		int column = textureIndex % model.getTexture().getNumberOfRows();
 		return (float) column / (float) model.getTexture().getNumberOfRows();
 	}
 	
-	public float getTextureYOffset() {
+	public float getTextureYOffset()
+	{
 		int row = textureIndex / model.getTexture().getNumberOfRows();
 		return (float) row / (float) model.getTexture().getNumberOfRows();
 	}

@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -83,6 +84,11 @@ public abstract class ShaderProgram
 		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
 	}
 	
+	protected void loadVector(int location, Vector4f vector)
+	{
+		GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+	}
+	
 	protected void load2DVector(int location, Vector2f vector)
 	{
 		GL20.glUniform2f(location, vector.x, vector.y);
@@ -114,12 +120,11 @@ public abstract class ShaderProgram
 			String line;
 			while((line = reader.readLine()) != null)
 			{
-				shaderSource.append(line).append("\n");
+				shaderSource.append(line).append("//\n");
 			}
 			reader.close();
 		} catch(IOException e)
 		{
-			System.err.println("Could not read file!");
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -129,7 +134,7 @@ public abstract class ShaderProgram
 		if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE)
 		{
 			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-			System.err.println("Could not compile shader.");
+			System.err.println("Could not compile shader!");
 			System.exit(-1);
 		}
 		return shaderID;
