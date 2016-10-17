@@ -11,6 +11,8 @@ import org.lwjgl.util.vector.Vector4f;
 import com.wafflekingdom.avaritia.entities.Camera;
 import com.wafflekingdom.avaritia.terrains.Terrain;
 
+import java.util.List;
+
 public class MousePicker {
 	
 	private static final int RECURSION_COUNT = 200;
@@ -22,18 +24,21 @@ public class MousePicker {
 	private Matrix4f viewMatrix;
 	private Camera camera;
 	
-	private Terrain terrain[];
+	private List<Terrain> terrain;
 	private Vector3f currentTerrainPoint;
 	
-	public MousePicker(Camera cam, Matrix4f projection, Terrain[] terrain) {
+	public MousePicker(Camera cam, Matrix4f projection, List<Terrain> terrain) {
 		camera = cam;
 		projectionMatrix = projection;
 		viewMatrix = Maths.createViewMatrix(camera);
+		this.terrain = terrain;
+		/*
 		this.terrain = new Terrain[terrain.length];
 		for(int i = 0; i < terrain.length; i++)
 		{
 			this.terrain[i] = terrain[i];
 		}
+		*/
 	}
 	
 	public Vector3f getCurrentTerrainPoint() {

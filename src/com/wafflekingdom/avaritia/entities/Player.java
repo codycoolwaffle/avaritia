@@ -6,6 +6,8 @@ import com.wafflekingdom.avaritia.terrains.Terrain;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
+import java.util.List;
+
 public class Player extends Entity
 {
 	private static final float RUN_SPEED = 20;
@@ -26,7 +28,7 @@ public class Player extends Entity
 		super(model, position, rotX, rotY, rotZ, scale);
 	}
 	
-	public void move(Terrain[] terrains)
+	public void move(List<Terrain> terrains)
 	{
 		checkInputs();
 		super.increaseRotation(0, currentTurnSpeed * DisplayManager.getFrameTimeSeconds(), 0);
