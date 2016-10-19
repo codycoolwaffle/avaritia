@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/avaritia"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="lwjgl.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jars/lwjgl.jar!/"/>
+	</lib>
+	<lib name="lwjgl_util.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jars/lwjgl_util.jar!/"/>
+	</lib>
+	<lib name="slick-util.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jars/slick-util.jar!/"/>
+	</lib>
+	<lib name="PNGDecoder.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/lib/jars/PNGDecoder.jar!/"/>
+	</lib>
+	<levels>
+		<level name="macosx" value="project"/>
+		<level name="windows" value="project"/>
+	</levels>
+</component>
