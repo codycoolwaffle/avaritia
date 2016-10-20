@@ -105,11 +105,10 @@ public class MainGameLoop
 			{
 				float x = random.nextFloat() * 150;
 				float z = random.nextFloat() * -150;
-				if((x > 50 && x < 100)||(z < -50 && z > -100))
+				if((x > 50 && x < 100) || (z < -50 && z > -100))
 				{
 					
-				}
-				else
+				} else
 				{
 					float y = terrain.getHeightOfTerrain(x, z);
 					
@@ -121,11 +120,10 @@ public class MainGameLoop
 			{
 				float x = random.nextFloat() * 150;
 				float z = random.nextFloat() * -150;
-				if((x > 50 && x < 100)||(z < -50 && z > -100))
+				if((x > 50 && x < 100) || (z < -50 && z > -100))
 				{
 					
-				}
-				else
+				} else
 				{
 					float y = terrain.getHeightOfTerrain(x, z);
 					

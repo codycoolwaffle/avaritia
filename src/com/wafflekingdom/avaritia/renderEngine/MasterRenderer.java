@@ -1,26 +1,26 @@
 package com.wafflekingdom.avaritia.renderEngine;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.wafflekingdom.avaritia.entities.Camera;
+import com.wafflekingdom.avaritia.entities.Entity;
+import com.wafflekingdom.avaritia.entities.Light;
+import com.wafflekingdom.avaritia.models.TexturedModel;
 import com.wafflekingdom.avaritia.normalMappingRenderer.NormalMappingRenderer;
+import com.wafflekingdom.avaritia.shaders.StaticShader;
+import com.wafflekingdom.avaritia.shaders.TerrainShader;
+import com.wafflekingdom.avaritia.skybox.SkyboxRenderer;
+import com.wafflekingdom.avaritia.terrains.Terrain;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
-import com.wafflekingdom.avaritia.entities.Camera;
-import com.wafflekingdom.avaritia.entities.Entity;
-import com.wafflekingdom.avaritia.entities.Light;
-import com.wafflekingdom.avaritia.models.TexturedModel;
-import com.wafflekingdom.avaritia.shaders.StaticShader;
-import com.wafflekingdom.avaritia.shaders.TerrainShader;
-import com.wafflekingdom.avaritia.skybox.SkyboxRenderer;
-import com.wafflekingdom.avaritia.terrains.Terrain;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class MasterRenderer {
+public class MasterRenderer
+{
 	
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.1f;
@@ -47,7 +47,8 @@ public class MasterRenderer {
 	
 	private List<Terrain> terrains = new ArrayList<>();
 	
-	public MasterRenderer(Loader loader) {
+	public MasterRenderer(Loader loader)
+	{
 		enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
@@ -61,12 +62,13 @@ public class MasterRenderer {
 		return this.projectionMatrix;
 	}
 	
-	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane) {
-		for (Terrain terrain : terrains)
+	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights, Camera camera, Vector4f clipPlane)
+	{
+		for(Terrain terrain : terrains)
 		{
 			processTerrain(terrain);
 		}
-		for (Entity entity : entities)
+		for(Entity entity : entities)
 		{
 			processEntity(entity);
 		}
@@ -101,16 +103,19 @@ public class MasterRenderer {
 		normalMapEntities.clear();
 	}
 	
-	public static void enableCulling() {
+	public static void enableCulling()
+	{
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 	}
 	
-	public static void disableCulling() {
+	public static void disableCulling()
+	{
 		GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 	
-	public void processTerrain(Terrain terrain) {
+	public void processTerrain(Terrain terrain)
+	{
 		terrains.add(terrain);
 	}
 	
@@ -128,31 +133,37 @@ public class MasterRenderer {
 		}
 	}
 	
-	public void processEntity(Entity entity) {
+	public void processEntity(Entity entity)
+	{
 		TexturedModel entityModel = entity.getModel();
 		List<Entity> batch = entities.get(entityModel);
-		if (batch != null) {
+		if(batch != null)
+		{
 			batch.add(entity);
-		} else {
+		} else
+		{
 			List<Entity> newBatch = new ArrayList<Entity>();
 			newBatch.add(entity);
 			entities.put(entityModel, newBatch);
 		}
 	}
 	
-	public void cleanUp() {
+	public void cleanUp()
+	{
 		shader.cleanUp();
 		terrainShader.cleanUp();
 		normalMapRenderer.cleanUp();
 	}
 	
-	public void prepare() {
+	public void prepare()
+	{
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(RED, GREEN, BLUE, 1);
 	}
 	
-	private void createProjectionMatrix() {
+	private void createProjectionMatrix()
+	{
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio);
 		float x_scale = y_scale / aspectRatio;
