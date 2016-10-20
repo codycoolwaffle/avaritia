@@ -32,13 +32,6 @@ public class MousePicker {
 		projectionMatrix = projection;
 		viewMatrix = Maths.createViewMatrix(camera);
 		this.terrain = terrain;
-		/*
-		this.terrain = new Terrain[terrain.length];
-		for(int i = 0; i < terrain.length; i++)
-		{
-			this.terrain[i] = terrain[i];
-		}
-		*/
 	}
 	
 	public Vector3f getCurrentTerrainPoint() {

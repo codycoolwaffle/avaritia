@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Terrain
 {
 	
-	private static final float SIZE = 800;
+	private static final float SIZE = 150;
 	private static final float MAX_HEIGHT = 40;
 	private static final float MAX_PIXEL_COLOUR = 256 * 256 * 256;
 	
@@ -48,8 +48,8 @@ public class Terrain
 			e.printStackTrace();
 		}
 		int VERTEX_COUNT = image.getHeight();
-		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		int count = VERTEX_COUNT * VERTEX_COUNT;
+		heights = new float[VERTEX_COUNT][VERTEX_COUNT];
 		float[] vertices = new float[count * 3];
 		float[] normals = new float[count * 3];
 		float[] textureCoords = new float[count * 2];
@@ -61,8 +61,8 @@ public class Terrain
 			{
 				vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
 				float height = getHeight(j, i, image);
-				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 1] = height;
+				heights[j][i] = height;
 				vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
 				Vector3f normal = calculateNormal(j, i, image);
 				normals[vertexPointer * 3] = normal.x;

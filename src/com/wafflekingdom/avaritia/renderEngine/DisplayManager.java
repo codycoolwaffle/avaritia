@@ -26,6 +26,7 @@ public class DisplayManager
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.create(new PixelFormat(), attribs);
 			Display.setTitle(TITLE);
+			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch(LWJGLException e)
 		{
 			e.printStackTrace();

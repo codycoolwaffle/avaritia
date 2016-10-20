@@ -71,10 +71,10 @@ public class SkyboxRenderer
 	
 	public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix)
 	{
-		this.cube = loader.loadToVAO(VERTICES, 3);
-		this.texture = loader.loadCubeMap(TEXTURE_FILES);
-		this.nightTexture = loader.loadCubeMap(NIGHT_TEXTURE_FILES);
-		this.shader = new SkyboxShader();
+		cube = loader.loadToVAO(VERTICES, 3);
+		texture = loader.loadCubeMap(TEXTURE_FILES);
+		nightTexture = loader.loadCubeMap(NIGHT_TEXTURE_FILES);
+		shader = new SkyboxShader();
 		shader.start();
 		shader.connectTextureUnits();
 		shader.loadProjectionMatrix(projectionMatrix);
@@ -104,12 +104,12 @@ public class SkyboxRenderer
 		float blendFactor;
 		if(time >= 0 && time < 5000)
 		{
-			texture1 = nightTexture;
-			texture2 = nightTexture;
+			texture1 = texture;
+			texture2 = texture;
 			blendFactor = (time - 0) / (5000 - 0);
 		} else if(time >= 5000 && time < 8000)
 		{
-			texture1 = nightTexture;
+			texture1 = texture;
 			texture2 = texture;
 			blendFactor = (time - 5000) / (8000 - 5000);
 		} else if(time >= 8000 && time < 21000)
@@ -120,7 +120,7 @@ public class SkyboxRenderer
 		} else
 		{
 			texture1 = texture;
-			texture2 = nightTexture;
+			texture2 = texture;
 			blendFactor = (time - 21000) / (24000 - 21000);
 		}
 		
