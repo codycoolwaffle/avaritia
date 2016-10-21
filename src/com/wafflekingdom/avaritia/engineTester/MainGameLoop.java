@@ -4,6 +4,9 @@ import com.wafflekingdom.avaritia.entities.Camera;
 import com.wafflekingdom.avaritia.entities.Entity;
 import com.wafflekingdom.avaritia.entities.Light;
 import com.wafflekingdom.avaritia.entities.Player;
+import com.wafflekingdom.avaritia.fontMeshCreator.FontType;
+import com.wafflekingdom.avaritia.fontMeshCreator.GUIText;
+import com.wafflekingdom.avaritia.fontRendering.TextMaster;
 import com.wafflekingdom.avaritia.guis.GuiRenderer;
 import com.wafflekingdom.avaritia.guis.GuiTexture;
 import com.wafflekingdom.avaritia.models.RawModel;
@@ -25,9 +28,11 @@ import com.wafflekingdom.avaritia.water.WaterTile;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,6 +46,11 @@ public class MainGameLoop
 		
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		TextMaster.init(loader);
+		
+		FontType font = new FontType(loader.loadFontTextureAtlas("candara"), new File("res/candara.fnt"));
+		GUIText text = new GUIText("A sample string of text!", 3, font, new Vector2f(0.0f, 0.4f), 1f, true);
+		text.setColour(0.1f, 0.1f, 0.1f);
 		
 		// *********TERRAIN TEXTURE STUFF***********
 		
@@ -131,7 +141,7 @@ public class MainGameLoop
 				}
 			}
 		}
-		entities.add(new Entity(rocks, new Vector3f(75, 4.6f, -75), 0, 0, 0, 75));
+		entities.add(new Entity(rocks, new Vector3f(600f, 4.6f, -600f), 0, 0, 0, 600));
 		
 		List<Light> lights = new ArrayList<>();
 		Light sun = new Light(new Vector3f(10000, 10000, -10000), new Vector3f(1.3f, 1.3f, 1.3f));
@@ -157,7 +167,7 @@ public class MainGameLoop
 		WaterShader waterShader = new WaterShader();
 		WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
 		List<WaterTile> waters = new ArrayList<>();
-		WaterTile water = new WaterTile(75, -75, 0);
+		WaterTile water = new WaterTile(600, -600, 0);
 		waters.add(water);
 		
 		while(!Display.isCloseRequested())
@@ -188,10 +198,12 @@ public class MainGameLoop
 			renderer.renderScene(entities, normalMapEntities, terrainList, lights, camera, new Vector4f(0, -1, 0, 100000));
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
+			TextMaster.render();
 			
 			DisplayManager.updateDisplay();
 		}
 		
+		TextMaster.cleanUp();
 		buffers.cleanUp();
 		waterShader.cleanUp();
 		guiRenderer.cleanUp();

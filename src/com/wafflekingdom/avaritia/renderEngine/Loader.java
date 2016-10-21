@@ -34,6 +34,15 @@ public class Loader
 		return new RawModel(vaoID, indices.length);
 	}
 	
+	public int loadToVAO(float[] positions, float[] textureCoords)
+	{
+		int vaoID = createVAO();
+		storeDataInAttributeList(0, 2, positions);
+		storeDataInAttributeList(1, 2, textureCoords);
+		unbindVAO();
+		return vaoID;
+	}
+	
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents, int[] indices)
 	{
 		int vaoID = createVAO();
@@ -67,6 +76,25 @@ public class Loader
 		{
 			e.printStackTrace();
 			System.err.println("Tried to load texture " + fileName + ".png , didn't work");
+			System.exit(-1);
+		}
+		textures.add(texture.getTextureID());
+		return texture.getTextureID();
+	}
+	
+	public int loadFontTextureAtlas(String fileName)
+	{
+		Texture texture = null;
+		try
+		{
+			texture = TextureLoader.getTexture("PNG", new FileInputStream("res/" + fileName + ".png"));
+			GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+			GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+			GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, 0);
+		} catch(Exception e)
+		{
+			e.printStackTrace();
+			System.err.println("Tried to load font " + fileName + ".png , didn't work");
 			System.exit(-1);
 		}
 		textures.add(texture.getTextureID());
