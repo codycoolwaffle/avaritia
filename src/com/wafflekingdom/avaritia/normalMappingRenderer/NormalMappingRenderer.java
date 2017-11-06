@@ -8,6 +8,7 @@ import com.wafflekingdom.avaritia.models.TexturedModel;
 import com.wafflekingdom.avaritia.renderEngine.MasterRenderer;
 import com.wafflekingdom.avaritia.textures.ModelTexture;
 import com.wafflekingdom.avaritia.toolbox.Maths;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 public class NormalMappingRenderer
 {
-	
+
 	private NormalMappingShader shader;
 	
 	public NormalMappingRenderer(Matrix4f projectionMatrix)
@@ -32,7 +33,8 @@ public class NormalMappingRenderer
 		shader.stop();
 	}
 	
-	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane, List<Light> lights, Camera camera)
+	public void render(Map<TexturedModel, List<Entity>> entities, Vector4f clipPlane,
+	                   List<Light> lights, Camera camera)
 	{
 		shader.start();
 		prepare(clipPlane, lights, camera);
@@ -88,7 +90,9 @@ public class NormalMappingRenderer
 	
 	private void prepareInstance(Entity entity)
 	{
-		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+		Matrix4f transformationMatrix = Maths
+				.createTransformationMatrix(entity.getPosition(), entity.getRotX(),
+				                            entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(transformationMatrix);
 		shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
 	}
@@ -96,7 +100,7 @@ public class NormalMappingRenderer
 	private void prepare(Vector4f clipPlane, List<Light> lights, Camera camera)
 	{
 		shader.loadClipPlane(clipPlane);
-		// need to be public variables in MasterRenderer
+		//need to be public variables in MasterRenderer
 		shader.loadSkyColour(MasterRenderer.RED, MasterRenderer.GREEN, MasterRenderer.BLUE);
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		

@@ -9,6 +9,7 @@ import com.wafflekingdom.avaritia.shaders.StaticShader;
 import com.wafflekingdom.avaritia.shaders.TerrainShader;
 import com.wafflekingdom.avaritia.skybox.SkyboxRenderer;
 import com.wafflekingdom.avaritia.terrains.Terrain;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
@@ -49,7 +50,7 @@ public class MasterRenderer
 	
 	public MasterRenderer(Loader loader)
 	{
-		enableCulling();
+		//enableCulling();
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);

@@ -2,14 +2,14 @@ package com.wafflekingdom.avaritia.normalMappingObjConverter;
 
 public class ModelDataNM
 {
-	
+
 	private float[] vertices;
 	private float[] textureCoords;
 	private float[] normals;
 	private float[] tangents;
 	private int[] indices;
 	private float furthestPoint;
-	
+
 	public ModelDataNM(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
 	                   float furthestPoint)
 	{

@@ -2,6 +2,7 @@ package com.wafflekingdom.avaritia.normalMappingRenderer;
 
 import com.wafflekingdom.avaritia.entities.Light;
 import com.wafflekingdom.avaritia.shaders.ShaderProgram;
+
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -36,7 +37,7 @@ public class NormalMappingShader extends ShaderProgram
 	{
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
-	
+
 	@Override
 	protected void bindAttributes()
 	{
@@ -45,7 +46,7 @@ public class NormalMappingShader extends ShaderProgram
 		super.bindAttribute(2, "normal");
 		super.bindAttribute(3, "tangent");
 	}
-	
+
 	@Override
 	protected void getAllUniformLocations()
 	{
@@ -118,7 +119,8 @@ public class NormalMappingShader extends ShaderProgram
 				super.loadVector(location_lightPositionEyeSpace[i], getEyeSpacePosition(lights.get(i), viewMatrix));
 				super.loadVector(location_lightColour[i], lights.get(i).getColour());
 				super.loadVector(location_attenuation[i], lights.get(i).getAttenuation());
-			} else
+			}
+			else
 			{
 				super.loadVector(location_lightPositionEyeSpace[i], new Vector3f(0, 0, 0));
 				super.loadVector(location_lightColour[i], new Vector3f(0, 0, 0));
@@ -144,5 +146,6 @@ public class NormalMappingShader extends ShaderProgram
 		Matrix4f.transform(viewMatrix, eyeSpacePos, eyeSpacePos);
 		return new Vector3f(eyeSpacePos);
 	}
+	
 	
 }

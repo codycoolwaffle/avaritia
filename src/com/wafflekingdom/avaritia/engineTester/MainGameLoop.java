@@ -12,6 +12,8 @@ import com.wafflekingdom.avaritia.guis.GuiTexture;
 import com.wafflekingdom.avaritia.models.RawModel;
 import com.wafflekingdom.avaritia.models.TexturedModel;
 import com.wafflekingdom.avaritia.normalMappingObjConverter.NormalMappedObjLoader;
+import com.wafflekingdom.avaritia.particles.ParticleMaster;
+import com.wafflekingdom.avaritia.particles.ParticleSystem;
 import com.wafflekingdom.avaritia.renderEngine.DisplayManager;
 import com.wafflekingdom.avaritia.renderEngine.Loader;
 import com.wafflekingdom.avaritia.renderEngine.MasterRenderer;
@@ -25,6 +27,7 @@ import com.wafflekingdom.avaritia.water.WaterFrameBuffers;
 import com.wafflekingdom.avaritia.water.WaterRenderer;
 import com.wafflekingdom.avaritia.water.WaterShader;
 import com.wafflekingdom.avaritia.water.WaterTile;
+
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -47,6 +50,8 @@ public class MainGameLoop
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
 		TextMaster.init(loader);
+		MasterRenderer renderer = new MasterRenderer(loader);
+		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 		
 		FontType font = new FontType(loader.loadFontTextureAtlas("candara"), new File("res/candara.fnt"));
 		GUIText text = new GUIText("A sample string of text!", 3, font, new Vector2f(0.0f, 0.4f), 1f, true);
@@ -147,10 +152,9 @@ public class MainGameLoop
 		Light sun = new Light(new Vector3f(10000, 10000, -10000), new Vector3f(1.3f, 1.3f, 1.3f));
 		lights.add(sun);
 		
-		MasterRenderer renderer = new MasterRenderer(loader);
-		
 		RawModel playerRaw = OBJFileLoader.loadOBJModel("person", loader);
 		TexturedModel playerModel = new TexturedModel(playerRaw, new ModelTexture(loader.loadTexture("playerTexture")));
+		//playerModel.getTexture().setNormalMap(loader.loadTexture("player/player_skin_Normal"));
 		
 		//Player player = new Player(playerModel, new Vector3f(random.nextFloat() * 600 - 300, 5, random.nextFloat() * 600 - 300), 0, 180, 0, 0.6f);
 		Player player = new Player(playerModel, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
@@ -170,12 +174,18 @@ public class MainGameLoop
 		WaterTile water = new WaterTile(600, -600, 0);
 		waters.add(water);
 		
+		ParticleSystem system = new ParticleSystem(50, 25, 0.3f, 4, 1);
+		
 		while(!Display.isCloseRequested())
 		{
-			camera.move();
 			player.move(terrainList);
+			camera.move();
 			
 			picker.update();
+			system.generateParticles(
+					new Vector3f(player.getPosition().x, player.getPosition().y + 4,
+					             player.getPosition().z));
+			ParticleMaster.update();
 			entity.increaseRotation(0, 1, 0);
 			entity2.increaseRotation(0, 1, 0);
 			entity3.increaseRotation(0, 1, 0);
@@ -197,12 +207,14 @@ public class MainGameLoop
 			buffers.unbindCurrentFrameBuffer();
 			renderer.renderScene(entities, normalMapEntities, terrainList, lights, camera, new Vector4f(0, -1, 0, 100000));
 			waterRenderer.render(waters, camera, sun);
+			ParticleMaster.renderParticles(camera);
 			guiRenderer.render(guiTextures);
 			TextMaster.render();
 			
 			DisplayManager.updateDisplay();
 		}
 		
+		ParticleMaster.cleanUp();
 		TextMaster.cleanUp();
 		buffers.cleanUp();
 		waterShader.cleanUp();

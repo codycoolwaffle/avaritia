@@ -3,6 +3,7 @@ package com.wafflekingdom.avaritia.entities;
 import com.wafflekingdom.avaritia.models.TexturedModel;
 import com.wafflekingdom.avaritia.renderEngine.DisplayManager;
 import com.wafflekingdom.avaritia.terrains.Terrain;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -12,7 +13,7 @@ public class Player extends Entity
 {
 	private static final float RUN_SPEED = 40;
 	private static final float TURN_SPEED = 160;
-	private static final float GRAVITY = -50;
+	public static final float GRAVITY = -50;
 	private static final float JUMP_POWER = 18;
 	
 	private float currentSpeed = 0;

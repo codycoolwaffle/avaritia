@@ -13,7 +13,7 @@ const float edge = 0.1;
 const float borderWidth = 0.0;
 const float borderEdge = 0.4;
 
-const vec2 offset = vec2(0.0, 0.0);
+const vec2 offset = vec2(1.0, 1.0);
 
 const vec3 outlineColour = vec3(0.2, 0.2, 0.2);
 
